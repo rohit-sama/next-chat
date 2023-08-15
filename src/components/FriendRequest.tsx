@@ -48,13 +48,15 @@ const FriendRequest: FC<FriendRequestProps> = ({
           <div key={request.senderID} className="flex gap-4 items-center">
             <UserPlus className="text-black" />
             <p className="text-lg text-zinc-600">{request.senderEmail}</p>
-            <button
+            <button 
+            onClick={() => acceptFriendRequest(request.senderID)}
               aria-label="accept friend"
               className="w-8 h-8 bg-green-600 hover:bg-green-700 grid place-items-center rounded-full transition hover:shadow-md"
             >
               <Check className="font-semibold text-white w-3/5 h-3/4" />
             </button>
             <button
+            onClick={() => denyFriendRequest(request.senderID)}
               aria-label="deny friend"
               className="w-8 h-8 bg-red-600 hover:bg-red-700 grid place-items-center rounded-full transition hover:shadow-md"
             >
