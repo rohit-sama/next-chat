@@ -8,6 +8,9 @@ import Image from "next/image";
 import SignOutButton from "@/components/SignOutButton";
 import FriendRequestSidebar from "@/components/FriendRequestSidebar";
 import { fetchRedis } from "@/helpers/redis";
+import { getFriendsByUserId } from "@/helpers/get-friends";
+import SidebarChatList from "@/components/SidebarChatList";
+
 
 interface layoutProps {
   children: ReactNode;
@@ -38,6 +41,8 @@ const layout = async ({ children }: layoutProps) => {
     await fetchRedis( "smembers" , `user:${session.user.id}:incoming_friend_requests`) as User[] 
  ).length;
 
+ const friends = await getFriendsByUserId(session.user.id);
+
   return (
     <div className="w-full flex  h-screen">
       <div className="flex h-full w-full m-3 rohit max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white p-y-6 ">
@@ -45,12 +50,14 @@ const layout = async ({ children }: layoutProps) => {
           <Icons.logo className="h-8 w-auto text-indigo-600" />
         </Link>
 
-        <div className="text-sm font-semibold leading-6 text-gray-400">
+        {friends.length > 0 ? (<div className="text-sm font-semibold leading-6 text-gray-400">      
           Your Chats
-        </div>
+        </div>): null}
+
+
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <li> chat 1</li>
+            <li><SidebarChatList friends={friends} /></li>
             <li>
               <div className="text-xs font-semibold leading-6 text-gray-400">
                 Overwiew
