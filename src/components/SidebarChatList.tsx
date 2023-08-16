@@ -1,18 +1,41 @@
-import { Divide } from 'lucide-react'
-import { FC } from 'react'
+"use client"
+import { chatHrefConst } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+import { FC, use, useEffect, useState } from "react";
 
 interface SidebarChatListProps {
-    friends: User[]
+  friends: User[];
+  sessionId: string;
 }
 
-const SidebarChatList: FC<SidebarChatListProps> = ({ friends }) => {
+const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [unseenMessages, setUnseenMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    if (pathname?.includes("chat")) {
+      setUnseenMessages((prev) => {
+        return prev.filter((msg) => !pathname.includes(msg.senderId));
+      });
+    }
+  }, [pathname]);
 
 
-    return <ul role='list' className='max-h-[25rem] overflow-y-auto mx-2 space-y-1'>
-        {friends.sort().map((friend) => {
-            return (<div>fgdfg</div>)
-        })}
+
+  return (
+    <ul role="list" className="max-h-[25rem] overflow-y-auto mx-2 space-y-1">
+      {friends.sort().map((friend) => {
+        const unseenMessagescount = unseenMessages.filter((unseen) => {
+            return unseen.senderId === friend.id
+        }).length
+
+        return <li key={friend.id}>
+            <a href={`/dashboard/chat/${chatHrefConst(sessionId, friend.id)}`}>tgry</a>
+        </li>
+      })}
     </ul>
-}
+  );
+};
 
 export default SidebarChatList;

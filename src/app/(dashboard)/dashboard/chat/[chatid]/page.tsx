@@ -7,44 +7,47 @@ import { notFound } from 'next/navigation';
 
 interface pageProps {
     params: {
-        chatid: string
-    }
+        chatid: string;
+    };
 }
+
 async function getMessages(chatid: string) {
-try {
-    const results : string[] = await fetchRedis('zrange',`chat:${chatid}:messages`,0,-1)
+    try {
+        const results: string[] = await fetchRedis('zrange', `chat:${chatid}:messages`, 0, -1);
 
+        const dbMessages = results.map((message) => JSON.parse(message) as Message);
 
-    const dbMessages = results.map((message) => {
-        JSON.parse(message) as Message
-    })
+        const reversedMessages = dbMessages.reverse();
+        const messages = messageListValidator.parse(reversedMessages);
 
-    const reversedMessages = dbMessages.reverse()
-    const messages = messageListValidator.parse(reversedMessages)
-
-    return messages
-} catch (error) {
-    notFound()
-}
+        return messages;
+    } catch (error) {
+        notFound();
+    }
 }
 
 const page = async ({ params }: pageProps) => {
     const { chatid } = params;
 
-    const session = await getServerSession(authOptions)
-    if (!session) notFound()
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        notFound();
+        
+    }
 
-    const { user } = session
+    const { user } = session;
+    const [userId1, userId2] = chatid.split('--');
+    console.log(user.id)
+    if (userId1 !== user.id && userId2 !== user.id) {
+        notFound();
+        
+    }
+    
+    const chatPartenerId = userId1 === user.id ? userId2 : userId1;
+    const chatPartner = (await db.get(`user:${chatPartenerId}`)) as User;
+    const initialMessages = await getMessages(chatid);
 
-    const [userId1, userId2] = chatid.split('--')
-
-    if (userId1 !== user.id && userId2 !== user.id) notFound()
-
-    const chatPartenerId = userId1 === user.id ? userId2 : userId1
-    const chatPaetener = (await db.get(`user:${chatPartenerId}`)) as User
-    const initialMessages = await getMessages(chatid)
-
-    return <div>{params.chatid}</div>
-}
+    return <div>{chatPartner.email}</div>;
+};
 
 export default page;
