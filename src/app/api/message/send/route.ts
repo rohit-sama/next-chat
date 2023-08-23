@@ -1,7 +1,9 @@
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
+import { nanoid } from "nanoid";
+import { Message,  messageValidator } from "@/lib/validations/message";
+import { db } from "@/lib/db";
 
 export async function POST(req: Request) {
   try {
@@ -26,6 +28,27 @@ export async function POST(req: Request) {
       "get",
       `user:${session.user.id}`
     )) as string;
-    const sender = JSON.parse(rawsender);
-  } catch (error) {}
+    const sender = JSON.parse(rawsender) as User;
+
+    const timestamp = Date.now();
+
+    const messageData: Message = {
+        id : nanoid(),
+        senderId: session.user.id,
+        text,
+        timestamp,
+    }
+
+    const message = messageValidator.parse(messageData);
+
+    await db.zadd(`chat:${chatid}:messages`, {score: timestamp, member: JSON.stringify(message)});
+
+
+    return new Response("OK")
+  } catch (error) {
+    if (error instanceof Error) {
+      return new Response(error.message, { status: 400 });
+    }
+    return new Response("Bad Request", { status: 500 });
+  }
 }
