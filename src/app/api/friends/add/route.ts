@@ -3,7 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { addFriendsValidator } from "@/lib/validations/addFriends";
 import { getServerSession } from "next-auth";
-import { z } from "zod";
+import { z } from "zod"
 
 export async function POST(req: Request) {
   try {
