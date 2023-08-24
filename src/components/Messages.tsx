@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { Message } from "@/lib/validations/message";
-import { Divide } from "lucide-react";
 import { FC, useRef, useState } from "react";
 
 interface MessagesProps {
