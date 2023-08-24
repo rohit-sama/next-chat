@@ -3,15 +3,23 @@
 import { cn } from "@/lib/utils";
 import { Message } from "@/lib/validations/message";
 import { FC, useRef, useState } from "react";
+import {format} from "date-fns";
+import Image from "next/image";
 
 interface MessagesProps {
   initialMessages: Message[];
   sessionid: string;
+  sessionImg : string | undefined | null ;
+  chatPartner : User;
 }
 
-const Messages: FC<MessagesProps> = ({ initialMessages, sessionid }) => {
+const Messages: FC<MessagesProps> = ({ initialMessages, sessionid, sessionImg, chatPartner }) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
+
+  const formatTime = (timestamp: number) => {
+    return format(timestamp, 'HH:mm')
+  }
   return (
     <div
       id="messages"
@@ -49,9 +57,23 @@ const Messages: FC<MessagesProps> = ({ initialMessages, sessionid }) => {
                   })}>
                   {message.text}{' '}
                   <span className='ml-2 text-xs text-gray-400'>
-                    {(message.timestamp)}
+                    {formatTime(message.timestamp)}
                   </span>
                 </span>
+              </div>
+
+              <div className={cn('relative w-6 h-6', {
+                'order-2': isCurrentUser,
+                'order-1': !isCurrentUser,
+                invisible: hasNextMessageFromSameUser,
+              })}>
+                <Image
+                fill
+                src={isCurrentUser? (sessionImg as string) : chatPartner.image
+                }
+                alt="Profile image"
+                referrerPolicy="no-referrer"
+                className="rounded-full" />
               </div>
             </div>
           </div>
