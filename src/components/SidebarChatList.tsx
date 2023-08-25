@@ -31,7 +31,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
         return (
           <li key={friend.id}>
             <a href={`/dashboard/chat/${chatHrefConst(sessionId, friend.id)}`}
-            className="text-gray-700 hover:text-indigo-600 hover:bg-gray-50 group flex items-center gap-x3 rounded-md p-2 text-sm leadin-6 font-semibold">
+            className="text-white hover:text-black hover:bg-indigo-300 group flex items-center gap-x3 rounded-md p-2 text-sm leadin-6 font-semibold">
               {friend.name}
               {
                 unseenMessagescount > 0 ? (

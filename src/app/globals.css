@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
+:root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -18,13 +18,18 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  background: rgb(2, 0, 36);
   background: linear-gradient(
-    110.6deg,
-    rgb(156, 116, 129) -18.3%,
-    rgb(67, 54, 74) 16.4%,
-    rgb(47, 48, 67) 68.2%,
-    rgb(27, 23, 36) 99.1%
+    90deg,
+    rgba(2, 0, 36, 1) 21%,
+    rgba(23, 19, 60, 1) 86%,
+    rgba(13, 12, 18, 1) 100%,
+    rgba(0, 212, 255, 1) 100%,
+    rgba(14, 14, 16, 1) 100%
   );
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .rohit {
@@ -40,7 +45,7 @@ body {
         rgba(0, 0, 0, 0.4) 120%
       )
       #989898;
-} */
+}
 
 .scrollbar-w-2::-webkit-scrollbar {
   width: 0.25rem;
@@ -61,4 +66,7 @@ body {
 
 .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
   border-radius: 0.25rem;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

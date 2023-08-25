@@ -54,7 +54,7 @@ const Messages: FC<MessagesProps> = ({ initialMessages, sessionid, sessionImg,ch
         return (
           <div key={`${message.id}-${message.timestamp}`}>
             <div
-              className={cn("flex items-end", { "justify-end": isCurrentUser })}
+              className={cn("flex items-end ", { "justify-end": isCurrentUser })}
             >
               <div
                 className={cn(
@@ -68,14 +68,17 @@ const Messages: FC<MessagesProps> = ({ initialMessages, sessionid, sessionImg,ch
                  <span
                   className={cn('px-4 py-2 rounded-lg inline-block', {
                     'bg-indigo-600 text-white': isCurrentUser,
-                    'bg-gray-200 text-gray-900': !isCurrentUser,
+                    'bg-indigo-200 text-gray-900': !isCurrentUser,
                     'rounded-br-none':
                       !hasNextMessageFromSameUser && isCurrentUser,
                     'rounded-bl-none':
                       !hasNextMessageFromSameUser && !isCurrentUser,
                   })}>
                   {message.text}{' '}
-                  <span className='ml-2 text-xs text-gray-400'>
+                  <span className={cn('ml-2 text-xs', {
+                    'text-gray-200' : isCurrentUser,
+                    'text-black-500' : !isCurrentUser,
+                  })} >
                     {formatTime(message.timestamp)}
                   </span>
                 </span>

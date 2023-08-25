@@ -67,8 +67,8 @@ console.log("hello1", `user:${sessionId}:incoming_friend_requests`)
       ) : (
         friendRequest.map((request) => (
           <div key={request.senderID} className="flex gap-4 items-center">
-            <UserPlus className="text-black" />
-            <p className="text-lg text-zinc-600">{request.senderEmail}</p>
+            <UserPlus className="text-gray-500" />
+            <p className="text-lg text-zinc-300">{request.senderEmail}</p>
             <button
               onClick={() => acceptFriendRequest(request.senderID)}
               aria-label="accept friend"
