@@ -33,7 +33,6 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
       if (!notiify) return;
 
       toast.custom((t) => (
-        console.log(t),
         <UnseenToast
           t={t}
           senderMessage={message.text}
@@ -59,7 +58,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
       pusherClient.unbind("new-message", chatHandler);
       pusherClient.unbind("new-friend", friendHandler);
     };
-  }, []);
+  }, [pathname, sessionId, router ]);
 
   useEffect(() => {
     if (pathname?.includes("chat")) {

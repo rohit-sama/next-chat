@@ -25,9 +25,9 @@ const FriendRequest: FC<FriendRequestProps> = ({
     pusherClient.subscribe(
       ToPushKEY(`user:${sessionId}:incoming_friend_requests`)
     );
-console.log("hello1", `user:${sessionId}:incoming_friend_requests`)
+
     const friendRequestHandler = ({senderID, senderEmail}: IncomingFriendRequest) => {
-      console.log("hello2")
+      
       setFriendRequest((prev) => [...prev,{senderID, senderEmail} ]);
     };
 
@@ -38,7 +38,7 @@ console.log("hello1", `user:${sessionId}:incoming_friend_requests`)
       );
       pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
     };
-  }, []);
+  }, [sessionId]);
 
   const acceptFriendRequest = async (senderID: string) => {
     await axios.post("/api/friends/accept", { id: senderID });
