@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { FC, use, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import UnseenToast from "./unseenToast";
-import { set } from "date-fns";
 
 interface SidebarChatListProps {
   friends: User[];
@@ -79,7 +78,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
           <li key={friend.id}>
             <a
               href={`/dashboard/chat/${chatHrefConst(sessionId, friend.id)}`}
-              className="text-white hover:text-black hover:bg-indigo-300 group flex items-center gap-x3 rounded-md p-2 text-sm leadin-6 font-semibold"
+              className="text-white sm:flex hover:text-black hover:bg-indigo-300 group flex items-center gap-x3 rounded-md p-2 text-sm leadin-6 font-semibold"
             >
               {friend.name}
               {unseenMessagescount > 0 ? (
