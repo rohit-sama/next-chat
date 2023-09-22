@@ -4,7 +4,6 @@ import { fetchRedis } from '@/helpers/redis';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { messageListValidator } from '@/lib/validations/message';
-import { Session } from 'inspector';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -48,7 +47,11 @@ const page = async ({ params }: pageProps) => {
     }
     
     const chatPartenerId = userId1 === user.id ? userId2 : userId1;
-    const chatPartner = (await db.get(`user:${chatPartenerId}`)) as User;
+
+    
+    const chatPartnerRaw = await fetchRedis('get', `user:${chatPartenerId}`) as string;
+    const chatPartner = JSON.parse(chatPartnerRaw) as User;
+
     const initialMessages = await getMessages(chatid);
 
     return <div className='flex-1 justify-between flex m-5  flex-col h-full max-h-[calc(100vh-6rem)]'>

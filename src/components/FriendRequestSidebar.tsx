@@ -23,19 +23,27 @@ const FriendRequestSidebar: FC<FriendRequestSidebarProps> = ({
     pusherClient.subscribe(
       ToPushKEY(`user:${sessionId}:incoming_friend_requests`)
     );
+    pusherClient.subscribe(ToPushKEY(`user:${sessionId}:friends`));
 
     const friendRequestHandler = () => {
       setUnseenRequestCounter((prev) => prev + 1);
     };
+    const addedFriendHandler = () => {
+      setUnseenRequestCounter((prev) => prev - 1);
+    };
 
     pusherClient.bind("incoming_friend_requests", friendRequestHandler);
+    pusherClient.bind("new-friend", addedFriendHandler);
     return () => {
       pusherClient.unsubscribe(
         ToPushKEY(`user:${sessionId}:incoming_friend_requests`)
       );
+
+      pusherClient.unsubscribe(ToPushKEY(`user:${sessionId}:friends`));
       pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
+      pusherClient.unbind("new-friend", addedFriendHandler);
     };
-  },[sessionId])
+  }, [sessionId]);
 
   return (
     <Link
@@ -47,8 +55,10 @@ const FriendRequestSidebar: FC<FriendRequestSidebarProps> = ({
       </div>
       <p className="truncate hover:text-indigo-300">Friend requests </p>
       {unseenRequestCounter > 0 ? (
-        <div className="rounded-full w-5 h-5 text-xs flex justify-center items-center text-white bg-red-400">{unseenRequestCounter}</div>
-      ): null}
+        <div className="rounded-full w-5 h-5 text-xs flex justify-center items-center text-white bg-red-400">
+          {unseenRequestCounter}
+        </div>
+      ) : null}
     </Link>
   );
 };
