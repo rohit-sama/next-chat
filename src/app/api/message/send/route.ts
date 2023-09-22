@@ -41,11 +41,11 @@ export async function POST(req: Request) {
 
     const message = messageValidator.parse(messageData);
 
-    pusherServer.trigger(
+    await pusherServer.trigger(
       ToPushKEY(`chat:${chatid}`), 'incoming-message',
       message,
     )
-    pusherServer.trigger(
+    await pusherServer.trigger(
       ToPushKEY(`user:${Friendid}:chats`), 'new-message',
      { ...message,
       senderImg: sender.image,
