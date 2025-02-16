@@ -214,7 +214,7 @@ const Page: FC = () => {
                 whileHover={{ scale: 1.02 }}
                 className="p-6 rounded-xl bg-white/5 backdrop-blur-sm"
               >
-                <p className="text-gray-300 mb-4">"{testimonial.text}"</p>
+                <p className="text-gray-300 mb-4">&ldquo;{testimonial.text}&rdquo;</p>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
                   <div>
